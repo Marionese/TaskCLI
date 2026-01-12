@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 
 List<TaskItem> taskList = new List<TaskItem>();
@@ -24,6 +25,12 @@ switch (args[0])
     case "clear":
         ClearTasks();
         break;
+    case "delete":
+        DeleteTask();
+        break;
+    case "update":
+        UpdateTask();
+        break;
 }
 void AddTask()
 {
@@ -34,18 +41,25 @@ void AddTask()
     task.Text = args[1];
     WriteTasks();
 }
+void DeleteTask()
+{
+    if (args.Length != 2) return;
+
+}
+void UpdateTask()
+{
+    if (args.Length != 3) return;
+
+}
 void DoneTask()
 {
     if (args.Length != 2) return;
     int Id = int.Parse(args[1]);
-    foreach (var task in taskList)
+    var task = taskList.FirstOrDefault(t => t.Id == Id);
+    if (task != null)
     {
-
-        if (task.Id == Id)
-        {
-            task.IsDone = true;
-            WriteTasks();
-        }
+        task.IsDone = true;
+        WriteTasks();
     }
 }
 void WriteTasks()
