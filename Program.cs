@@ -60,6 +60,7 @@ void DoneTask()
     {
         task.IsDone = true;
         WriteTasks();
+        ListTasks();
     }
 }
 void WriteTasks()
