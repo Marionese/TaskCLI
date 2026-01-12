@@ -35,7 +35,11 @@ switch (args[0])
 void AddTask()
 {
     if (args.Length != 2) return;
+
+    int maxInternalId = taskList.Any() ? taskList.Max(t => t.InternalId) : 0;
+    int newInternalId = maxInternalId + 1;
     TaskItem task = new TaskItem { };
+    task.InternalId = newInternalId;
     taskList.Add(task);
     task.Text = args[1];
     ReIndexTasks();
