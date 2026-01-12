@@ -37,19 +37,36 @@ void AddTask()
     if (args.Length != 2) return;
     TaskItem task = new TaskItem { };
     taskList.Add(task);
-    task.Id = taskList.Count;
     task.Text = args[1];
+    ReIndexTasks();
     WriteTasks();
+    ListTasks();
 }
 void DeleteTask()
 {
     if (args.Length != 2) return;
-
+    int Id = int.Parse(args[1]);
+    var task = taskList.FirstOrDefault(t => t.Id == Id);
+    if (task != null)
+    {
+        taskList.Remove(task);
+        ReIndexTasks();
+        WriteTasks();
+        ListTasks();
+    }
 }
 void UpdateTask()
 {
     if (args.Length != 3) return;
-
+    int Id = int.Parse(args[1]);
+    string newText = args[2];
+    var task = taskList.FirstOrDefault(t => t.Id == Id);
+    if (task != null)
+    {
+        task.Text = newText;
+        WriteTasks();
+        ListTasks();
+    }
 }
 void DoneTask()
 {
@@ -88,5 +105,13 @@ void ListTasks()
     foreach (var task in taskList)
     {
         Console.WriteLine($"{task.Id}: {task.Text} [{(task.IsDone ? "Done" : "Todo")}]");
+    }
+}
+void ReIndexTasks()
+{
+    for (int i = 0; i < taskList.Count; i++)
+    {
+        // Remember: List index starts at 0, but we want IDs to start at 1
+        taskList[i].Id = i + 1;
     }
 }
